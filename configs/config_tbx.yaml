@@ -1,0 +1,40 @@
+# config file
+
+params:
+    # input files from radiative transfer (rt)
+    rt_paths: ['example_data/']
+    rt_patterns: ['rt_10393_vers01_*.nc', 'rt_lindenberg_vers03-era5-clwc_*.nc']
+
+    # 3 letter site description
+    site: 'rao'
+    
+    # site long name
+    site_location: 'Lindenberg, DE'
+    
+    # version
+    retrieval_version: 'tb00'
+    
+    # general specifications
+    predictand_min: 2.73
+    predictand_max: 330.
+
+    # predictor
+    predictor: 'tb'
+    predictor_min: 2.73
+    predictor_max: 330.
+    tb_noise: 0.1
+
+    predictor_error: [0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
+    
+    # surface layer measurement uncertainties, T, p, q
+    surface_error: [0.15, 100., .5e-3]
+    
+    # retrieval specifications
+    
+    freq: [22.24, 23.04, 23.84, 25.44, 26.24, 27.84, 31.4, 51.26, 52.28, 53.86, 54.94, 56.66, 57.30, 58.00]
+
+    angle: [90]
+        
+    surf_mode: 'no_surface'
+        
+            

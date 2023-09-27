@@ -1,0 +1,31 @@
+# config file for tpb retrievals
+
+params:
+    # input files from radiative transfer (rt)
+    rt_paths: ['example_data/']
+    rt_patterns: ['rt_10393_vers01_*.nc', 'rt_lindenberg_vers03-era5-clwc_*.nc']
+
+    # 3 letter site description
+    site: 'rao'
+    
+    # site long name
+    site_location: 'Lindenberg, GER'
+    
+    # version
+    retrieval_version: 'tb01'
+    
+    # general specifications
+    predictand_min: 190.
+    predictand_max: 330.
+
+    # predictor
+    predictor: 'tb'
+    predictor_min: 2.73
+    predictor_max: 330.
+    tb_noise: 0.15
+
+    # surface layer measurement uncertainties, T, p, q
+    surface_error: [0.15, 100., .5e-3]
+        
+    surf_mode: 'no_surface'
+    
