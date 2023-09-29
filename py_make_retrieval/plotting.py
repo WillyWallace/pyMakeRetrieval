@@ -1,6 +1,7 @@
+"""Module for plotting"""
 import xarray as xr
+import numpy as np
 # import pandas as pd
-# import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 
@@ -9,7 +10,7 @@ def plot_performance_2d(
         files: list,
         labels=None
 ):
-    r"""Generates performance (bias, std.) plot of the selected retrievals
+    """Generates performance (bias, std.) plot of the selected retrievals
     Args:
     files: list of input retrieval nc files, maximum is 3
     labels: list of labels to use in the legend, default is None
@@ -17,8 +18,8 @@ def plot_performance_2d(
     Returns:
         fig and ax object of the plot
 
-    Example:
-        >>> from plotting import plot_performance_2d
+    Examples:
+        >>> from py_make_retrieval.plotting import plot_performance_2d
         >>> plot_performance_2d(
         ['tpb_rao_rt00_7-10.nc', 'tpb_rao_rt00_4-10.nc', 'tpb_rao_rt00_4-9.nc'],
         labels = ['7 freqs, 10 angles\nwith_zenith', '4 freqs, 10 angles\nwith zenith',
@@ -48,8 +49,8 @@ def plot_performance_2d(
 
     fig, ax = plt.subplots(ncols=2, figsize=(8, 4), sharey='row')
 
-    i = 0
-    for file in files:
+    # i = 0
+    for file, i in zip(files, np.arange(len(files))):
         data = xr.open_dataset(file)
         ax[0].plot(data.predictand_err_sys * fac,
                    data.height_grid / 1000.,
@@ -64,7 +65,7 @@ def plot_performance_2d(
                    )
 
         # ax[2].plot(data.r2, data.height_grid / 1000., label=label, ls=lstyles[i])
-        i = i + 1
+        # i = i + 1
 
     ax[0].set_xlabel('Bias ('+unit+')')
     ax[1].set_xlabel('St. dev. ('+unit+')')
@@ -98,5 +99,6 @@ def plot_performance_2d(
         outfile_name = 'retrieval_performance'
 
     plt.savefig(outfile_name + '.png')
+    plt.close(fig)
 
-    return fig, ax
+    # return fig, ax

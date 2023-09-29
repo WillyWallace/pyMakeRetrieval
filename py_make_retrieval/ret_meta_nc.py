@@ -1,5 +1,7 @@
 """Module for retrieval Metadata"""
 from collections import namedtuple
+from collections.abc import Callable
+from typing import TypeAlias
 
 
 def get_data_attributes(rpg_variables: dict, data_type: str) -> dict:
@@ -20,7 +22,8 @@ def get_data_attributes(rpg_variables: dict, data_type: str) -> dict:
     """
 
     if data_type in ("tbx", "iwv", "lwp", "tpb", "tpt", "hpt"):
-        attributes = dict(ATTRIBUTES_COM, **eval("ATTRIBUTES_" + data_type))
+        read_att = att_reader[data_type]
+        attributes = dict(ATTRIBUTES_COM, **read_att)
 
     else:
         raise RuntimeError(["Data type " + data_type + " not supported for file writing."])
@@ -37,7 +40,7 @@ def get_data_attributes(rpg_variables: dict, data_type: str) -> dict:
     return rpg_variables
 
 
-FIELDS = ("long_name", "standard_name", "units", "definition", "comment")
+FIELDS = ("long_name", "units")
 
 MetaData = namedtuple("MetaData", FIELDS)
 MetaData.__new__.__defaults__ = (None,) * len(MetaData._fields)
@@ -113,42 +116,7 @@ ATTRIBUTES_tbx = {
     ),
 }
 
-ATTRIBUTES_iwv = {
-    "prdmx": MetaData(
-        long_name="predictand maximum",
-        units='kg m-2',
-    ),
-    "prdmn": MetaData(
-        long_name="predictand minimum",
-        units='kg m-2',
-    ),
-    "prrmx": MetaData(
-        long_name="predictor maximum",
-        units='K',
-    ),
-    "prrmn": MetaData(
-        long_name="predictor minimum",
-        units='K',
-    ),
-    "predictand_err": MetaData(
-        long_name="standard error of predictand",
-        units="kgm-2",
-    ),
-    "predictand_err_sys": MetaData(
-        long_name="bias error of predictand",
-        units="kgm-2",
-    ),
-    "coefficient_mvr": MetaData(
-        long_name="multi variate regression coefficients",
-        units="kgm-2/K",
-    ),
-    "offset_mvr": MetaData(
-        long_name="multi variate regression offset",
-        units="kgm-2",
-    ),
-}
-
-ATTRIBUTES_lwp = {
+ATTRIBUTES_iwv_lwp = {
     "prdmx": MetaData(
         long_name="predictand maximum",
         units='kg m-2',
@@ -302,4 +270,14 @@ ATTRIBUTES_hpt = {
         long_name="multi variate regression offset",
         units="K",
     ),
+}
+
+FuncType: TypeAlias = Callable[[str], dict]
+att_reader: dict[str, dict] = {
+    "tbx": ATTRIBUTES_tbx,
+    "tpb": ATTRIBUTES_tpb,
+    "iwv": ATTRIBUTES_iwv_lwp,
+    "lwp": ATTRIBUTES_iwv_lwp,
+    "tpt": ATTRIBUTES_tpt,
+    "hpt": ATTRIBUTES_hpt,
 }

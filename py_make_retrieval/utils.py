@@ -1,13 +1,14 @@
+"""contains helper functions"""
 import yaml
-import numpy as np
+# import numpy as np
 from numpy import ma
 from yaml.loader import SafeLoader
 
 
 def read_yaml_config(_file) -> dict:
     """Reads config yaml files."""
-    with open(_file) as f:
-        config = yaml.load(f, Loader=SafeLoader)
+    with open(_file, encoding="utf-8") as _f:
+        config = yaml.load(_f, Loader=SafeLoader)
 
     return config
 

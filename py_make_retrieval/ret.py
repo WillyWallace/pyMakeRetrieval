@@ -105,14 +105,7 @@ def save_ret(ret: Ret, output_file: str, att: dict, data_type: str) -> None:
             "n_prr_errs": 3,
             "n_coeff": len(ret.data["coefficient_mvr"][:, 0]),
         }
-    elif data_type == "tbx":
-        dims = {
-            "n_freq_ret": len(ret.data["freq"][:]),
-            "n_prr_err": len(ret.data["freq"][:].T)+1,
-            "n_prr_errs": 3,
-            "n_coeff": 2 * len(ret.data["freq"][:]),
-        }
-    elif (data_type == "iwv") or (data_type == "lwp"):
+    elif (data_type == "tbx") or (data_type == "iwv") or (data_type == "lwp"):
         dims = {
             "n_freq_ret": len(ret.data["freq"][:]),
             "n_prr_err": len(ret.data["freq"][:].T)+1,

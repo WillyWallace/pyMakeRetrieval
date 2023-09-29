@@ -1,3 +1,7 @@
+"""
+Module that contains the core functions
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors as colors
@@ -39,7 +43,7 @@ class MakeRetrieval:
     ret_type : str
         here fixed as 'tpb', later development will include iwv, lwp, hpt, tpt and tbx
     frequency : np.ndarray
-        used frequencies
+        frequencies used
     height_grid : xarray data array
         output height grid
     mwr_pro_ret : RetArray object
@@ -79,13 +83,13 @@ class MakeRetrieval:
     ..
 
     """
-    
+
     def __init__(self,
                  _specs,
                  _rt_data,
                  _ret_type
                  ):
-        
+
         self.specs = _specs
         self.rt_data = _rt_data
         # self.name = _specs['name']
@@ -160,10 +164,11 @@ class MakeRetrieval:
                             self.r2 = self.make_linear_regression()
 
                         # test model
-                        self.n_test, self.pred_test, self.bias, self.std = self.test_model()
+                        self.n_test, self.y_test_fil, self.pred_test, \
+                            self.bias, self.std = self.test_model()
 
                         # plot retrieval performance
-                        self.plot_retrieval_performance_1d(ang, ii, self.y_test, self.pred_test,
+                        self.plot_retrieval_performance_1d(ang, ii, self.y_test_fil, self.pred_test,
                                                            self.bias, self.std, self.r2)
 
                         # make file
@@ -230,10 +235,11 @@ class MakeRetrieval:
                         self.r2 = self.make_linear_regression()
 
                     # test model
-                    self.n_test, self.pred_test, self.bias, self.std = self.test_model()
+                    self.n_test, self.y_test_fil, self.pred_test, \
+                        self.bias, self.std = self.test_model()
 
                     # plot retrieval performance
-                    self.plot_retrieval_performance_1d(ang, ii, self.y_test, self.pred_test,
+                    self.plot_retrieval_performance_1d(ang, ii, self.y_test_fil, self.pred_test,
                                                        self.bias, self.std, self.r2
                                                        )
 
@@ -305,7 +311,7 @@ class MakeRetrieval:
                         self.r2 = self.make_linear_regression_profile()
 
                     # test model
-                    self.n_test, y_test_fil, self.pred_test, \
+                    self.n_test, self.y_test_fil, self.pred_test, \
                         self.bias, self.std = self.test_model_profile()
 
                     # plot retrieval performance
@@ -466,7 +472,8 @@ class MakeRetrieval:
             self.reg, self.coeff, self.const, self.r2 = self.make_linear_regression_profile()
 
             # test model
-            self.n_test, y_test_fil, self.pred_test, self.bias, self.std = self.test_model_profile()
+            self.n_test, self.y_test_fil, self.pred_test, \
+                self.bias, self.std = self.test_model_profile()
 
             # make file
             data_mwr = self.make_mwr_pro_comp_file(
@@ -477,7 +484,9 @@ class MakeRetrieval:
             self.mwr_pro_ret = ret.Ret(data_mwr)
 
             # get data attributes
-            self.mwr_pro_ret.data = get_data_attributes(self.mwr_pro_ret.data, 'tpb')
+            self.mwr_pro_ret.data = get_data_attributes(self.mwr_pro_ret.data,
+                                                        self.ret_type
+                                                        )
 
             # define output file
             self.output_file = 'tpb_' + self.specs['site'] + '_rt00_' + self.specs['handle'] + '.nc'
@@ -498,13 +507,13 @@ class MakeRetrieval:
         )
 
         n_test = i_test[0].shape[0]
+        y_test_fil = self.y_test[i_test[0]]
         pred_test = self.const + np.sum(
             np.array(self.x_test[i_test[0], :]) * np.asarray(self.coeff), axis=1)
-        bias = np.sum(np.subtract(pred_test[i_test[0]], self.y_test)[i_test[0]]) / n_test
-        std = np.std(np.subtract(pred_test[i_test[0]], self.y_test[i_test[0]]))
-        # r2 = r2_score(pred_test, self.y_test)
+        bias = np.sum(np.subtract(pred_test, y_test_fil)) / n_test
+        std = np.std(np.subtract(pred_test, y_test_fil))
 
-        return n_test, pred_test, bias, std
+        return n_test, y_test_fil, pred_test, bias, std
 
     def test_model_profile(self):
         n_test = []
@@ -520,12 +529,12 @@ class MakeRetrieval:
             )
             n_test.append(i_test[0].shape)
             y_test_fil.append(self.y_test[i_test[0], hh])
-            
+
             pred_test.append(self.const[hh] + np.sum(
                 np.array(self.x_test[i_test[0], :]) * np.asarray(self.coeff)[hh, :], axis=1))
             bias.append(np.sum(np.subtract(pred_test, y_test_fil)) / i_test[0].shape[0])
             std.append(np.std(np.subtract(pred_test, y_test_fil)))
-            
+
         return n_test, y_test_fil, pred_test, bias, std
 
     def make_linear_regression(self):
@@ -547,19 +556,20 @@ class MakeRetrieval:
         const = []
         r2 = []
 
+        reg = linear_model.LinearRegression()
+
         for hh in range(len(self.height_grid)):
             i_train = np.where(
                 (self.y_train[:, hh] > self.specs['predictand_min']) &
                 (self.y_train[:, hh] < self.specs['predictand_max'])
             )
-            
-            reg = linear_model.LinearRegression()
+
             reg.fit(self.x_train[i_train[0], :], self.y_train[i_train[0], hh])
             coeff.append(reg.coef_)
             const.append(reg.intercept_)
             r2.append(reg.score(self.x_train[i_train[0], :], self.y_train[i_train[0], hh]))
-            
-        return reg, coeff, const, r2 
+
+        return reg, coeff, const, r2
 
     def make_mwr_pro_comp_file(self, coeff, const, bias, std,
                                freq_wo_x=None, freq_bl_index_1=None, i_ang=None):
@@ -613,22 +623,23 @@ class MakeRetrieval:
         data_mwr_pro.update(data_mwr_pro_add)
 
         return data_mwr_pro
-        
+
     def make_global_attributes(self, ii=None):
-        global_attributes = {}
-        global_attributes['rt_data_path'] = str(self.specs['rt_paths'])
-        global_attributes['site'] = self.specs['site_location']
-        global_attributes['number_of_profiles_used'] = self.rt_data.sizes['n_date']
-        global_attributes['date_start'] = self.rt_data.date.values[0]
-        global_attributes['date_end'] = self.rt_data.date.values[-1]
-        global_attributes['rt_calc_cut_off_height_in_m'] = self.rt_data[
-            'cap_height_above_sea_level'].values[0]
-        global_attributes['gas_absorption_model'] = self.rt_data['gas_absorption_model'].values[0]
-        global_attributes['cloud_absorption_model'] = self.rt_data[
-            'cloud_absorption_model'].values[0]
-        global_attributes['wv_linewidth'] = self.rt_data['linewidth'].values[0]
-        global_attributes['wv_continuum_correction'] = self.rt_data['cont_corr'].values[0]
-        global_attributes['air_mass_correction'] = self.rt_data['air_mass_correction'].values[0]
+        global_attributes = {
+            'rt_data_path': str(self.specs['rt_paths']),
+            'site': self.specs['site_location'],
+            'number_of_profiles_used': self.rt_data.sizes['n_date'],
+            'date_start': self.rt_data.date.values[0],
+            'date_end': self.rt_data.date.values[-1],
+            'rt_calc_cut_off_height_in_m': self.rt_data[
+                'cap_height_above_sea_level'].values[0],
+            'gas_absorption_model': self.rt_data['gas_absorption_model'].values[0],
+            'cloud_absorption_model': self.rt_data[
+                'cloud_absorption_model'].values[0],
+            'wv_linewidth': self.rt_data['linewidth'].values[0],
+            'wv_continuum_correction': self.rt_data['cont_corr'].values[0],
+            'air_mass_correction': self.rt_data['air_mass_correction'].values[0]
+        }
 
         if self.ret_type == 'tpb':
             global_attributes['predictand'] = 'tpb'
@@ -664,11 +675,11 @@ class MakeRetrieval:
         global_attributes['retrieval_version'] = self.specs['retrieval_version']
         global_attributes['surface_mode'] = self.specs['surf_mode']
         global_attributes['regression_type'] = 'linear'
-        
+
         global_attributes['cloudy_clear'] = 'all'
         global_attributes['cloud_diagnosis'] = 'Karstens_1994'
         global_attributes['cloud_diagnosis_rh_threshold'] = self.rt_data['rh_thres'].values[0]
-        
+
         global_attributes['bandwidth_correction'] = 'no'
         global_attributes['beamwidth_correction'] = 'no'
 
@@ -756,3 +767,4 @@ class MakeRetrieval:
 
         plt.tight_layout()
         plt.savefig(png_file)
+        plt.close(fig)

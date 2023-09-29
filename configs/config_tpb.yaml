@@ -2,7 +2,7 @@
 
 params:
     # input files from radiative transfer (rt)
-    rt_paths: ['example_data/']
+    rt_paths: ['../example_data/']
     rt_patterns: ['rt_10393_vers01_*.nc', 'rt_lindenberg_vers03-era5-clwc_*.nc']
 
     # 3 letter site description
