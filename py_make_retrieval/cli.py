@@ -7,7 +7,7 @@ which adds the subcommand to the subparser.
 import argparse
 import sys
 
-import make_ret_all
+from py_make_retrieval import make_ret_all
 
 
 def main(args):

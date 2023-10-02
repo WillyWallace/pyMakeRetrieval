@@ -5,5 +5,5 @@ pyMakeRetrieval
 # https://github.com/remsens-lim/pyMakeRetrieval
 """
 
-import py_make_retrieval.make_ret_all
+import py_make_retrieval  # import make_ret_all
 from .version import __version__

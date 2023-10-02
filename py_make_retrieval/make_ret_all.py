@@ -4,7 +4,7 @@ import xarray as xr
 import glob
 
 from utils import read_yaml_config
-from make_ret_core import MakeRetrieval
+from py_make_retrieval.make_ret_core import MakeRetrieval
 
 
 def main(args):

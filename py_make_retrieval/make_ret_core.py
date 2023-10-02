@@ -4,15 +4,15 @@ Module that contains the core functions
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import colors as colors
+from matplotlib import colors as mcolors
 from matplotlib.patches import Patch
 
 from sklearn.model_selection import train_test_split
 from sklearn import linear_model
 
-from ret_meta_nc import get_data_attributes
-import ret
-from plotting import plot_performance_2d
+from py_make_retrieval.ret_meta_nc import get_data_attributes
+from py_make_retrieval import ret
+from py_make_retrieval.plotting import plot_performance_2d
 
 
 class MakeRetrieval:
@@ -54,7 +54,7 @@ class MakeRetrieval:
         name of the output file
     pred_test : list
         prediction of test data
-    r2 : list
+    r_2 : list
         coefiicient of determination between prediction and true value of test data
     reg : SciKit Learn linear regression object
         ...
@@ -100,12 +100,12 @@ class MakeRetrieval:
         if (self.ret_type == 'tbx') or (self.ret_type == 'iwv') or (self.ret_type == 'lwp') or \
                 (self.ret_type == 'tpt') or (self.ret_type == 'hpt'):
 
-            freq_index = self.get_freq_index(self.specs['freq'], self.rt_data)
-            angle_index = self.get_angle_index()
+            self.freq_index = self.get_freq_index(self.specs['freq'], self.rt_data)
+            self.angle_index = self.get_angle_index()
 
             # update radiative transfer data
-            self.rt_dat = self.rt_data.isel(n_frequency=freq_index,
-                                            n_angle=angle_index,
+            self.rt_dat = self.rt_data.isel(n_frequency=self.freq_index,
+                                            n_angle=self.angle_index,
                                             n_cloud_model=0,
                                             n_height=slice(0, -4),
                                             ).drop_dims(['n_wet_delay_models', 'n_cloud_max'])
@@ -144,8 +144,7 @@ class MakeRetrieval:
                                              n_angle=i_ang).brightness_temperatures.values[:, 0]
 
                         # add measurement noise to the brightness temperatures
-                        noise = np.random.normal(0, 1., x.shape) * self.specs['tb_noise']
-                        x_noise = x + noise
+                        x_noise = self.method_name(x)
 
                         # make quadratic
                         x_new = np.concatenate([x_noise, x_noise ** 2], axis=1)
@@ -155,13 +154,14 @@ class MakeRetrieval:
                             x_new,
                             y,
                             test_size=0.2,
-                            random_state=42)
+                            random_state=42
+                        )
 
                         # ret_name = 'tbx_freq_'+str(i_freq_index[0])+'_angle_'+str(i_ang)+'_ret'
 
                         # make linear regression
                         self.reg, self.coeff, self.const, \
-                            self.r2 = self.make_linear_regression()
+                            self.r_2 = self.make_linear_regression()
 
                         # test model
                         self.n_test, self.y_test_fil, self.pred_test, \
@@ -169,7 +169,7 @@ class MakeRetrieval:
 
                         # plot retrieval performance
                         self.plot_retrieval_performance_1d(ang, ii, self.y_test_fil, self.pred_test,
-                                                           self.bias, self.std, self.r2)
+                                                           self.bias, self.std, self.r_2)
 
                         # make file
                         data_mwr = self.make_mwr_pro_comp_file(self.coeff, self.const, self.bias,
@@ -215,8 +215,7 @@ class MakeRetrieval:
                         raise ValueError("no valid ret_type")
 
                     # add measurement noise to the brightness temperatures
-                    noise = np.random.normal(0, 1., x.shape) * self.specs['tb_noise']
-                    x_noise = x + noise
+                    x_noise = self.method_name(x)
 
                     # make quadratic
                     x_new = np.concatenate([x_noise, x_noise ** 2], axis=1)
@@ -232,7 +231,7 @@ class MakeRetrieval:
 
                     # make linear regression
                     self.reg, self.coeff, self.const, \
-                        self.r2 = self.make_linear_regression()
+                        self.r_2 = self.make_linear_regression()
 
                     # test model
                     self.n_test, self.y_test_fil, self.pred_test, \
@@ -240,7 +239,7 @@ class MakeRetrieval:
 
                     # plot retrieval performance
                     self.plot_retrieval_performance_1d(ang, ii, self.y_test_fil, self.pred_test,
-                                                       self.bias, self.std, self.r2
+                                                       self.bias, self.std, self.r_2
                                                        )
 
                     # make file
@@ -258,7 +257,7 @@ class MakeRetrieval:
                                                                 )
 
                     # define output file
-                    self.output_file = self.ret_type + '_' + self.specs['site'] + '_rt00_' + str(
+                    output_file = self.ret_type + '_' + self.specs['site'] + '_rt00_' + str(
                         int(ang)) + '.nc'
 
                     # make global attributes
@@ -266,7 +265,7 @@ class MakeRetrieval:
 
                     # save nc file
                     ret.save_ret(self.mwr_pro_ret,
-                                 self.output_file,
+                                 output_file,
                                  global_attributes,
                                  self.ret_type
                                  )
@@ -291,8 +290,7 @@ class MakeRetrieval:
                         raise ValueError("no valid ret_type")
 
                     # add measurement noise to the brightness temperatures
-                    noise = np.random.normal(0, 1., x.shape) * self.specs['tb_noise']
-                    x_noise = x + noise
+                    x_noise = self.method_name(x)
 
                     # make quadratic
                     x_new = np.concatenate([x_noise, x_noise ** 2], axis=1)
@@ -308,7 +306,7 @@ class MakeRetrieval:
 
                     # make linear regression
                     self.reg, self.coeff, self.const, \
-                        self.r2 = self.make_linear_regression_profile()
+                        self.r_2 = self.make_linear_regression_profile()
 
                     # test model
                     self.n_test, self.y_test_fil, self.pred_test, \
@@ -334,7 +332,7 @@ class MakeRetrieval:
                                                                 )
 
                     # define output file
-                    self.output_file = self.ret_type + '_' + self.specs['site'] + '_rt00_' + str(
+                    output_file = self.ret_type + '_' + self.specs['site'] + '_rt00_' + str(
                         int(ang)) + '.nc'
 
                     # make global attributes
@@ -342,13 +340,13 @@ class MakeRetrieval:
 
                     # save nc file
                     ret.save_ret(self.mwr_pro_ret,
-                                 self.output_file,
+                                 output_file,
                                  global_attributes,
                                  self.ret_type
                                  )
 
                     # plot model performance
-                    plot_performance_2d([self.output_file])
+                    plot_performance_2d([output_file])
 
         elif self.ret_type == 'tpb':
             _, freq_z_index, _ = np.intersect1d(
@@ -430,11 +428,10 @@ class MakeRetrieval:
             else:
                 xx_bl1 = np.asarray([])
 
-            xx_0 = self.rt_dat.isel(n_angle=angle_bl_index_1,
-                                    n_frequency=freq_bl_index_1,
-                                    n_height=0)
-
-            xx_bl = xx_0.brightness_temperatures.values
+            xx_bl = self.rt_dat.isel(n_angle=angle_bl_index_1,
+                                     n_frequency=freq_bl_index_1,
+                                     n_height=0
+                                     ).brightness_temperatures.values
 
             for i_bl in np.arange(len(freq_bl_index_1)):
                 if not xx_bl1.any():
@@ -442,15 +439,13 @@ class MakeRetrieval:
                 else:
                     xx_bl1 = np.append(xx_bl1, np.flip(np.squeeze(xx_bl[:, :, i_bl]), axis=1
                                                        ), axis=1)
-            xx = xx_bl1
 
             # define input and output
-            x = xx
+            x = xx_bl1
             y = self.rt_dat.isel(n_frequency=0, n_angle=0).atmosphere_temperature.values
 
             # add measurement noise to the brightness temperatures
-            noise = np.random.normal(0, 1., x.shape) * self.specs['tb_noise']
-            x_noise = x + noise
+            x_noise = self.method_name(x)
 
             if self.specs['surf_mode'] == 'surface':
                 t_gr_noise = np.random.normal(0, 1., y.shape[0]) * self.specs['T_gr_noise']
@@ -469,7 +464,7 @@ class MakeRetrieval:
                 random_state=42)
 
             # make linear regression
-            self.reg, self.coeff, self.const, self.r2 = self.make_linear_regression_profile()
+            self.reg, self.coeff, self.const, self.r_2 = self.make_linear_regression_profile()
 
             # test model
             self.n_test, self.y_test_fil, self.pred_test, \
@@ -489,16 +484,21 @@ class MakeRetrieval:
                                                         )
 
             # define output file
-            self.output_file = 'tpb_' + self.specs['site'] + '_rt00_' + self.specs['handle'] + '.nc'
+            output_file = 'tpb_' + self.specs['site'] + '_rt00_' + self.specs['handle'] + '.nc'
 
             # make global attributes
             global_attributes = self.make_global_attributes()
 
             # save nc file
-            ret.save_ret(self.mwr_pro_ret, self.output_file, global_attributes, self.ret_type)
+            ret.save_ret(self.mwr_pro_ret, output_file, global_attributes, self.ret_type)
 
             # plot model performance
-            plot_performance_2d([self.output_file])
+            plot_performance_2d([output_file])
+
+    def method_name(self, x):
+        noise = np.random.normal(0, 1., x.shape) * self.specs['tb_noise']
+        x_noise = x + noise
+        return x_noise
 
     def test_model(self):
         i_test = np.where(
@@ -727,7 +727,7 @@ class MakeRetrieval:
         dummy = ax.hist2d(y_test,
                           pred_test,
                           bins=bins,
-                          norm=colors.LogNorm(),
+                          norm=mcolors.LogNorm(),
                           cmin=1e0,
                           cmax=1e3,
                           cmap="cividis",
