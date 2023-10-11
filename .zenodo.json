@@ -1,0 +1,18 @@
+{
+  "title": "pyMakeRetrieval",
+  "creators": [
+    {
+      "name": "Foth, Andreas",
+      "orcid": "0000-0002-1164-3576",
+      "affiliation": "Leipzig Institute for Meteorology, Leipzig University, Leipzig, Germany"
+    }
+  ],
+  "keywords": [
+    "microwave",
+    "temperature",
+    "cloud",
+    "radiometer",
+    "retrieval",
+    "rain"
+  ]
+}
