@@ -2,28 +2,15 @@
 
 params:
     # input files from radiative transfer (rt)
-    # rt_paths: ['../example_data/']
-    # rt_patterns: ['rt_*_vers03-era5-clwc_*.nc', 'rt_10393_vers01_*.nc']
-    rt_paths: [
-        '/Users/andreas/work/Data/rad_transfer/punta-arenas/',
-        '/Users/andreas/work/Data/rad_transfer/lindenberg/',
-        '/Users/andreas/work/Data/rad_transfer/andenes/'
-    ]
-    rt_patterns: [
-        'rt_punta-arenas_vers04-era5-clwc_*.nc',
-        'rt_lindenberg_vers00-RS-mod_ad_*.nc',
-        'rt_andenes_vers01-era5-clwc_*.nc'
-    ]
+    rt_paths: ['../example_data/']
+    rt_patterns: ['rt_*_vers03-era5-clwc_*.nc', 'rt_10393_vers01_*.nc']
 
     # 3 letter site description
-    site: 'aas'
+    site: 'RAO'
     
     # site long name
-    site_location: 'Aas, NY'
+    site_location: 'Lindenberg, Germany'
 
     # version
     retrieval_version: 'tb01'
-
-
-        
-            
+    
