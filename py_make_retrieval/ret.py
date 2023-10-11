@@ -6,11 +6,11 @@ import numpy as np
 import netCDF4
 
 
-import utils
-import version
+from py_make_retrieval import utils
+from py_make_retrieval import version
 
 # from ret_meta_nc import get_data_attributes
-from ret_meta_nc import MetaData
+from py_make_retrieval.ret_meta_nc import MetaData
 
 
 class RetArray:
@@ -36,6 +36,7 @@ class RetArray:
         if isinstance(
                 self.variable, (int, float, np.float32, np.int8, np.float64, np.int32, np.uint16)):
             return np.array(self.variable)
+        raise ValueError(f"Incorrect input array: {self.variable}")
 
     def set_attributes(self, attributes: MetaData) -> None:
         """Overwrites existing instance attributes."""
@@ -97,7 +98,7 @@ def save_ret(ret: Ret, output_file: str, att: dict, data_type: str) -> None:
             "n_prr_errs": 3,
             "n_coeff": len(ret.data["coefficient_mvr"][:, 0]),
         }
-    elif (data_type == 'tpt') or (data_type == 'hpt'):
+    elif data_type in ('tpt', 'hpt'):
         dims = {
             "n_freq_ret": len(ret.data["freq"][:]),
             "n_height_grid": len(ret.data["height_grid"][:]),
@@ -105,7 +106,7 @@ def save_ret(ret: Ret, output_file: str, att: dict, data_type: str) -> None:
             "n_prr_errs": 3,
             "n_coeff": len(ret.data["coefficient_mvr"][:, 0]),
         }
-    elif (data_type == "tbx") or (data_type == "iwv") or (data_type == "lwp"):
+    elif data_type in ("tbx", "iwv", "lwp"):
         dims = {
             "n_freq_ret": len(ret.data["freq"][:]),
             "n_prr_err": len(ret.data["freq"][:].T)+1,

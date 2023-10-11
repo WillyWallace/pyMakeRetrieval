@@ -1,0 +1,19 @@
+[TYPECHECK]
+ignored-modules	= numpy, netCDF4, xarray, matplotlib, scikit-learn
+
+[MESSAGES CONTROL]
+disable =
+  missing-module-docstring,
+  missing-function-docstring,
+  missing-class-docstring,
+  logging-fstring-interpolation,
+  invalid-name,
+  too-few-public-methods,
+  too-many-statements,
+  too-many-arguments,
+  too-many-locals,
+  too-many-instance-attributes,
+  duplicate-code,
+
+[MASTER]
+max-branches=23
