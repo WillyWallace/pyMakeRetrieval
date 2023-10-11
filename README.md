@@ -23,7 +23,7 @@ Generates microwave radiometer retrievals for LWP, IWV, TPT, HPT, TPB, TBX based
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#Introduction">Introduction</a></li>
-    <li><a href="#Installation">Getting Started</a></li>
+    <li><a href="#Installation">Installation</a></li>
     <li><a href="#Usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <!-- <li><a href="#contributing">Contributing</a></li> -->
