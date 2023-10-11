@@ -1,7 +1,7 @@
 <a name="top"></a>
 
 [![Python package](https://github.com/WillyWallace/pyMakeRetrieval/actions/workflows/python-package.yml/badge.svg)](https://github.com/WillyWallace/pyMakeRetrieval/actions/workflows/python-package.yml)
-[//]: # ([![Pylint]&#40;https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml/badge.svg&#41;]&#40;https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml&#41;)
+<!-- ([![Pylint]&#40;https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml/badge.svg&#41;]&#40;https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml&#41;)-->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Github all releases](https://img.shields.io/github/downloads/Naereen/StrapDown.js/total.svg)](https://github.com/remsens-lim/pyMakeRetrieval/releases/)
 [![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/Naereen/badges/)
