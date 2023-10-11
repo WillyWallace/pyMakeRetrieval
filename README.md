@@ -1,14 +1,13 @@
 <a name="top"></a>
 
-[![Python package](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/python-package.yml/badge.svg)](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/python-package.yml)
-[![DOI](https://zenodo.org/badge/697269185.svg)](https://zenodo.org/badge/latestdoi/697269185)
+[![Python package](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/python-package.yml/badge.svg)](https://github.com/WillyWallace/pyMakeRetrieval/actions/workflows/python-package.yml)
+[//]: # ([![Pylint]&#40;https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml/badge.svg&#41;]&#40;https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml&#41;)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Github all releases](https://img.shields.io/github/downloads/Naereen/StrapDown.js/total.svg)](https://github.com/remsens-lim/pyMakeRetrieval/releases/)
 [![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/Naereen/badges/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/remsens-lim/pyMakeRetrieval/graphs/commit-activity)
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/RSAtmos_LIM.svg?style=social&label=Follow%20%40RSAtmos_LIM)](https://twitter.com/RSAtmos_LIM)
 ![Mastodon Follow](https://img.shields.io/mastodon/follow/109461236453474330?domain=https%3A%2F%2Fmeteo.social&logoColor=%230066cc&style=social)
-<!-- ([![Pylint]&#40;https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml/badge.svg&#41;]&#40;https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml&#41;) -->
 
 <!-- [![Release][release-shield]][release-url] -->
 <!-- [![PyPi version](https://badgen.net/pypi/v/pip/)](https://pypi.com/project/pip) -->
@@ -24,7 +23,7 @@ Generates microwave radiometer retrievals for LWP, IWV, TPT, HPT, TPB, TBX based
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#Introduction">Introduction</a></li>
-    <li><a href="#Installation">Installation</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#Usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <!-- <li><a href="#contributing">Contributing</a></li> -->
@@ -38,6 +37,9 @@ Generates microwave radiometer retrievals for LWP, IWV, TPT, HPT, TPB, TBX based
 ## Introduction
 
 This repository was created for generating microwave radiometer retrievals for LWP, IWV, TPT, HPT, TPB, TBX based on radiative transfer calculation data. The default settings in the config files are set for the microwave radiometer HATPRO from the german manufacturer Radiometer Physics GmbH. 
+
+<!-- GETTING STARTED -->
+## Getting Started
 
 <!-- Installation -->
 ## Installation
@@ -113,6 +115,5 @@ Special thanks for templates and help during implementation.
 * [Readme Template](https://github.com/othneildrew/Best-README-Template)
 * [cloudnetpy GitHub](https://github.com/actris-cloudnet/cloudnetpy.git)
 * [mwrpy GitHub](https://github.com/actris-cloudnet/mwrpy.git)
-* [Jonas Witthuhn](https://github.com/jonas-witthuhn)
 
 <p text-align="right">(<a href="#top">back to top</a>)</p>

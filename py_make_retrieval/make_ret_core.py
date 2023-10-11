@@ -1,7 +1,7 @@
 """
 Module that contains the core functions
 """
-
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors as mcolors
@@ -97,8 +97,11 @@ class MakeRetrieval:
 
         # freq_index = self.get_freq_index()
 
-        if (self.ret_type == 'tbx') or (self.ret_type == 'iwv') or (self.ret_type == 'lwp') or \
-                (self.ret_type == 'tpt') or (self.ret_type == 'hpt'):
+        # make output directory
+        if not os.path.exists(f"output/{self.specs['site']}"):
+            os.makedirs(f"output/{self.specs['site']}")
+
+        if self.ret_type in ('tbx', 'iwv', 'lwp', 'tpt', 'hpt'):
 
             self.freq_index = self.get_freq_index(self.specs['freq'], self.rt_data)
             self.angle_index = self.get_angle_index()
@@ -183,8 +186,9 @@ class MakeRetrieval:
                                                                     self.ret_type)
 
                         # define output file
-                        self.output_file = self.ret_type + '_' + self.specs['site'] + '_rt00_'\
-                            + str(int(ang)) + '_' + "{:02d}".format(ii) + '.nc'
+                        self.output_file = f"output/{self.specs['site']}/{self.ret_type}_" \
+                                           f"{self.specs['site']}_rt00_{str(int(ang))}_" \
+                                           f"{str(ii).zfill(2)}.nc"
 
                         # make global attributes
                         global_attributes = self.make_global_attributes(ii)
@@ -197,7 +201,7 @@ class MakeRetrieval:
 
                     jj = jj + 1
 
-            elif (self.ret_type == 'iwv') or (self.ret_type == 'lwp'):
+            elif self.ret_type in ('iwv', 'lwp'):
                 for i_ang in self.specs['angle']:
                     ii = 0
                     xx = np.argwhere(self.rt_data.isel(n_date=0
@@ -257,20 +261,20 @@ class MakeRetrieval:
                                                                 )
 
                     # define output file
-                    output_file = self.ret_type + '_' + self.specs['site'] + '_rt00_' + str(
-                        int(ang)) + '.nc'
+                    self.output_file = f"output/{self.specs['site']}/{self.ret_type}_" \
+                                       f"{self.specs['site']}_rt00_{str(int(ang))}.nc"
 
                     # make global attributes
                     global_attributes = self.make_global_attributes(ii)
 
                     # save nc file
                     ret.save_ret(self.mwr_pro_ret,
-                                 output_file,
+                                 self.output_file,
                                  global_attributes,
                                  self.ret_type
                                  )
 
-            elif (self.ret_type == 'tpt') or (self.ret_type == 'hpt'):
+            elif self.ret_type in ('tpt', 'hpt'):
                 for i_ang in self.specs['angle']:
                     ii = 0
                     xx = np.argwhere(self.rt_data.isel(n_date=0
@@ -332,21 +336,21 @@ class MakeRetrieval:
                                                                 )
 
                     # define output file
-                    output_file = self.ret_type + '_' + self.specs['site'] + '_rt00_' + str(
-                        int(ang)) + '.nc'
+                    self.output_file = f"output/{self.specs['site']}/{self.ret_type}_" \
+                                       f"{self.specs['site']}_rt00_{str(int(ang))}.nc"
 
                     # make global attributes
                     global_attributes = self.make_global_attributes(ii)
 
                     # save nc file
                     ret.save_ret(self.mwr_pro_ret,
-                                 output_file,
+                                 self.output_file,
                                  global_attributes,
                                  self.ret_type
                                  )
 
                     # plot model performance
-                    plot_performance_2d([output_file])
+                    plot_performance_2d([self.output_file])
 
         elif self.ret_type == 'tpb':
             _, freq_z_index, _ = np.intersect1d(
@@ -484,16 +488,17 @@ class MakeRetrieval:
                                                         )
 
             # define output file
-            output_file = 'tpb_' + self.specs['site'] + '_rt00_' + self.specs['handle'] + '.nc'
+            self.output_file = f"output/{self.specs['site']}/{self.ret_type}_"\
+                               f"{self.specs['site']}_rt00_{self.specs['handle']}.nc"
 
             # make global attributes
             global_attributes = self.make_global_attributes()
 
             # save nc file
-            ret.save_ret(self.mwr_pro_ret, output_file, global_attributes, self.ret_type)
+            ret.save_ret(self.mwr_pro_ret, self.output_file, global_attributes, self.ret_type)
 
             # plot model performance
-            plot_performance_2d([output_file])
+            plot_performance_2d([self.output_file])
 
     def method_name(self, x):
         noise = np.random.normal(0, 1., x.shape) * self.specs['tb_noise']
@@ -580,7 +585,7 @@ class MakeRetrieval:
     def make_mwr_pro_comp_file(self, coeff, const, bias, std,
                                freq_wo_x=None, freq_bl_index_1=None, i_ang=None):
         """make ret files which is compatible with mwr-pro"""
-        if (self.ret_type == 'tbx') or (self.ret_type == 'iwv') or (self.ret_type == 'lwp'):
+        if self.ret_type in ('tbx', 'iwv', 'lwp'):
             data_mwr_pro_add = {
                 'elevation_predictand': self.rt_data.isel(n_date=0,
                                                           n_angle=i_ang).elevation_angle.values,
@@ -599,7 +604,7 @@ class MakeRetrieval:
                 'elevation_predictor': np.asarray(self.specs['multi_angles']),
                 'height_grid': np.asarray(self.height_grid.values),
             }
-        elif (self.ret_type == 'tpt') or (self.ret_type == 'hpt'):
+        elif self.ret_type in ('tpt', 'hpt'):
             data_mwr_pro_add = {
                 'elevation_predictand': self.rt_data.isel(n_date=0,
                                                           n_angle=i_ang).elevation_angle.values,
@@ -765,11 +770,12 @@ class MakeRetrieval:
                   frameon=False)
 
         if self.ret_type == 'tbx':
-            png_file = self.ret_type + '_' + self.specs['site'] + '_rt00_' + str(
-                int(ang)) + '_' + "{:02d}".format(ii) + '.png'
+            png_file = f"output/{self.specs['site']}/" \
+                       f"{self.ret_type}_{self.specs['site']}" \
+                       f"_rt00_{str(int(ang))}_{str(ii).zfill(2)}.png"
         else:
-            png_file = self.ret_type + '_' + self.specs['site'] + '_rt00_' + str(
-                int(ang)) + '.png'
+            png_file = f"output/{self.specs['site']}/" \
+                       f"{self.ret_type}_{self.specs['site']}_rt00_{str(int(ang))}.png"
 
         plt.tight_layout()
         plt.savefig(png_file)

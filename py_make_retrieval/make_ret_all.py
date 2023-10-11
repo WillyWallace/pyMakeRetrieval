@@ -1,9 +1,9 @@
 """Module for making retrieval."""
+import glob
 import numpy as np
 import xarray as xr
-import glob
 
-from utils import read_yaml_config
+from py_make_retrieval.utils import read_yaml_config
 from py_make_retrieval.make_ret_core import MakeRetrieval
 
 
@@ -18,7 +18,7 @@ def main(args):
                          "iwv, tpt, hpt, tpb, tbx or all")
 
     # read general config (paths,...)
-    general_config = read_yaml_config("configs/general_config.yaml")['params']
+    general_config = read_yaml_config("py_make_retrieval/configs/general_config.yaml")['params']
 
     # list files containing the radiative transfer output
     rt_file_list1 = []
@@ -41,19 +41,19 @@ def main(args):
 
     # set frequency and date as coordinates
     rt_data = rt_data.set_coords(['frequency', 'date'])
-    print(rt_data.sizes)
 
     for ret_type in ret_types:
         print('making ' + ret_type + ' retrievals')
         # import general parameters and retrieval configuration
         # read params
-        config = read_yaml_config("configs/config_" + ret_type + ".yaml")['params']
+        config = read_yaml_config("py_make_retrieval/configs/config_" +
+                                  ret_type + ".yaml")['params']
         config.update(general_config)
 
         # run the makeRetrieval class
         if ret_type == 'tpb':
             # read ret_specs
-            ret_specs = read_yaml_config("configs/ret_specs.yaml")
+            ret_specs = read_yaml_config("py_make_retrieval/configs/ret_specs.yaml")
 
             results = []
             for ret_spec in ret_specs:
