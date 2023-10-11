@@ -72,7 +72,10 @@ def plot_performance_2d(
     # ax[2].set_xlabel('Coeff. of det. R$^2$ (K)')
 
     ax[0].set_ylabel('Height (km)')
-    ax[0].set_ylim(0, 3)
+    if ret_type == 'tpb':
+        ax[0].set_ylim(0, 3)
+    else:
+        ax[0].set_ylim(0, 10)
 
     ax[0].set_xlim(xlimits_bias[0], xlimits_bias[1])
     ax[1].set_xlim(xlimits_std[0], xlimits_std[1])

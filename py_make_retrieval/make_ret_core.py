@@ -523,10 +523,16 @@ class MakeRetrieval:
         std = []
 
         for hh in range(len(self.height_grid)):
-            i_test = np.where(
-                (self.y_test[:, hh] > self.specs['predictand_min']) &
-                (self.y_test[:, hh] < self.specs['predictand_max'])
-            )
+            if self.ret_type == 'hpt':
+                i_test = np.where(
+                    (self.y_test[:, hh] < self.specs['predictand_max'])
+                )
+            else:
+                i_test = np.where(
+                    (self.y_test[:, hh] > self.specs['predictand_min']) &
+                    (self.y_test[:, hh] < self.specs['predictand_max'])
+                )
+
             n_test.append(i_test[0].shape)
             y_test_fil.append(self.y_test[i_test[0], hh])
 

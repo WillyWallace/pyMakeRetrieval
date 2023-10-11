@@ -14,7 +14,7 @@ from ret_meta_nc import MetaData
 
 
 class RetArray:
-    
+
     def __init__(
         self,
         variable: np.ndarray | float | int,
@@ -28,9 +28,9 @@ class RetArray:
         self.units = self._init_units(units_from_user)
         self.data_type = self._init_data_type()
         self.dimensions = dimensions
-        
+
     def _init_data(self) -> np.ndarray:
-        
+
         if isinstance(self.variable, np.ndarray):
             return self.variable
         if isinstance(
@@ -65,24 +65,24 @@ class RetArray:
 
     def __getitem__(self, ind: tuple) -> np.ndarray:
         return self.data[ind]
-    
-    
+
+
 class Ret:
-    
+
     def __init__(
-        self, 
+        self,
         raw_data: dict
     ):
         self.raw_data = raw_data
         self.data = {}
-        self.data = self._init_data() 
-    
+        self.data = self._init_data()
+
     def _init_data(self) -> dict:
         data = {}
         for key in self.raw_data:
             data[key] = RetArray(self.raw_data[key], key)
         return data
-    
+
 
 def save_ret(ret: Ret, output_file: str, att: dict, data_type: str) -> None:
     """Saves the Ret file."""
@@ -134,7 +134,7 @@ def init_file(
     nc = netCDF4.Dataset(file_name, "w", format="NETCDF4_CLASSIC")
     for key, dimension in dimensions.items():
         nc.createDimension(key, dimension)
-    
+
     _write_vars2nc(nc, ret_arrays)
     _add_standard_global_attributes(nc, att_global)
     return nc

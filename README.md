@@ -1,6 +1,6 @@
 <a name="top"></a>
 
-[//]: # ([![Python package]&#40;https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/python-package.yml/badge.svg&#41;]&#40;https://github.com/WillyWallace/pyMakeRetrieval/actions/workflows/python-package.yml&#41;)
+[![Python package](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/python-package.yml/badge.svg)](https://github.com/WillyWallace/pyMakeRetrieval/actions/workflows/python-package.yml)
 [//]: # ([![Pylint]&#40;https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml/badge.svg&#41;]&#40;https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml&#41;)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Github all releases](https://img.shields.io/github/downloads/Naereen/StrapDown.js/total.svg)](https://github.com/remsens-lim/pyMakeRetrieval/releases/)
@@ -44,16 +44,16 @@ This repository was created for generating microwave radiometer retrievals for L
 <!-- Installation -->
 ## Installation
 
-Below is an example of how run the script, which reads in the data and plots the results. This method relies on external dependencies such as xarray, numpy and others (see `setup.py`).
+Below is an example of how run the script, which reads in the radiative transfer data and makes the retrievals. This method relies on external dependencies such as xarray, numpy and others (see `setup.py`). The output are nc files which contains the coefficients and plots about the retrieval performance based on test data.
 
-1. Clone the repo
+1. install from github
    ```sh
-   git clone https://github.com/WillyWallace/eval_ac.git
-   ```
-
-2. Install the package
-   ```sh
-   python setup.py install
+   git clone https://github.com/remsens-lim/pyMakeRetrieval.git
+   cd pyMakeRetrieval
+   python3 -m venv venv
+   source venv/bin/activate
+   pip3 install --upgrade pip
+   pip3 install .
    ```
 
 <p text-align="right">(<a href="#top">back to top</a>)</p>
@@ -61,9 +61,20 @@ Below is an example of how run the script, which reads in the data and plots the
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-1. set your specifications (e.g. paths of the ABSCAL.his file) in the user specifications section at the top within the evaluate_absolute_calibration.py routine 
-2. run the evaluate_absolute_calibration.py routine
-3. see the results in the results_ln2_cal.png image
+1. set your specifications in the general_config file (e.g. paths and site specifics) and set your retrieval specifications in the retrieval config files. Use config_tpb.yaml and the ret_specs.yaml for tpb retrievals.
+2. run the routine
+   ```sh
+   py_make_retrieval/cli.py --ret RETRIEVAL
+   ```
+`RETRIEVAL`
+- `iwv`: integrated water vapour
+- `lwp`: liquid water path
+- `tbx`: spectrum retrievals for spectral consistency checks
+- `hpt`: absolute humidity profiles from single angle observations
+- `tpt`: temperature profiles from single angle observations
+- `tpb`: temperature profiles from multi angle observations (elevation scans)
+- `all`: makes all of the retrievals above
+
 
 [//]: # (<img src="eval_ac/results_ln2_cal.png" width="70%">)
 
@@ -75,10 +86,9 @@ Below is an example of how run the script, which reads in the data and plots the
 - [ ] add meaningful docstrings
 - [ ] make documentation --> readthedocs
 - [ ] enable pip install ...
-- [ ] Released version 1
 - [ ] Add Tests
 
-See the [open issues](https://github.com/WillyWallace/eval_ac/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/remsens-lim/pyMakeRetrieval/issues) for a full list of proposed features (and known issues).
 
 <p text-align="right">(<a href="#top">back to top</a>)</p>
 
@@ -104,5 +114,6 @@ Special thanks for templates and help during implementation.
 
 * [Readme Template](https://github.com/othneildrew/Best-README-Template)
 * [cloudnetpy GitHub](https://github.com/actris-cloudnet/cloudnetpy.git)
+* [mwrpy GitHub](https://github.com/actris-cloudnet/mwrpy.git)
 
 <p text-align="right">(<a href="#top">back to top</a>)</p>

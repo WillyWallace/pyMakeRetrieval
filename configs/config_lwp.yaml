@@ -1,19 +1,6 @@
 # config file
 
 params:
-    # input files from radiative transfer (rt)
-    rt_paths: ['../example_data/']
-    rt_patterns: ['rt_*_vers03-era5-clwc_*.nc', 'rt_10393_vers01_*.nc']
-    
-    # 3 letter site description
-    site: 'rao'
-    
-    # site long name
-    site_location: 'Lindenberg, DE'
-    
-    # version
-    retrieval_version: 'tb00'
-    
     # general specifications
     predictand_min: 0.
     predictand_max: 1.
