@@ -14,7 +14,7 @@ setup(
                       "netcdf4",
                       "scikit-learn",
                       "sklearn",
-                      "yaml",
+                      "pyyaml",
                       "matplotlib",
                       ],
 )
