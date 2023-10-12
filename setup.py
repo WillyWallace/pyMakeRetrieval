@@ -13,6 +13,8 @@ setup(
                       "xarray",
                       "netcdf4",
                       "scikit-learn",
+                      "sklearn",
+                      "yaml",
                       "matplotlib",
                       ],
 )
