@@ -2,7 +2,7 @@
 
 [![Python package](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/python-package.yml/badge.svg)](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/python-package.yml)
 [![Pylint](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml/badge.svg)](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml)
-[![DOI](https://zenodo.org/badge/697269185.svg)](https://zenodo.org/badge/latestdoi/697269185)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8431176.svg)](https://doi.org/10.5281/zenodo.8431176)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Github all releases](https://img.shields.io/github/downloads/Naereen/StrapDown.js/total.svg)](https://github.com/remsens-lim/pyMakeRetrieval/releases/)
 [![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/Naereen/badges/)
