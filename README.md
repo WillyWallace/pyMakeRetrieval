@@ -1,4 +1,4 @@
-<a name="top"></a>  
+<a name="top"></a>
 
 [![Python package](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/python-package.yml/badge.svg)](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/python-package.yml)
 [![Pylint](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml/badge.svg)](https://github.com/remsens-lim/pyMakeRetrieval/actions/workflows/pylint.yml)
