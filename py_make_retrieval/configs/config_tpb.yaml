@@ -1,0 +1,18 @@
+# config file for tpb retrievals
+
+params:
+    # general specifications
+    predictand_min: 190.
+    predictand_max: 330.
+
+    # predictor
+    predictor: 'tb'
+    predictor_min: 2.73
+    predictor_max: 330.
+    tb_noise: 0.15
+
+    # surface layer measurement uncertainties, T, p, q
+    surface_error: [0.15, 100., .5e-3]
+        
+    surf_mode: 'no_surface'
+    
