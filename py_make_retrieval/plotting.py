@@ -33,16 +33,16 @@ def plot_performance_2d(
         legend = True
     lstyles = ['--', '-.', ':']
 
-    ret_type = str(files[0])[0:3]
-    if ret_type == 'hpt':
+    # ret_type = str(files[0])[-3:1]
+    if 'hpt' in files[0]:
         unit = 'g m-3'
-        xlimits_bias = (-2, 2)
-        xlimits_std = (0, 2)
+        xlimits_bias = (-1, 1 )
+        xlimits_std = (0, 3)
         fac = 1e3
     else:
         unit = 'K'
-        xlimits_bias = (-.5, .5)
-        xlimits_std = (0, 1.2)
+        xlimits_bias = (-1, 1)
+        xlimits_std = (0, 3)
         fac = 1.
 
     plt.rcParams.update({'font.size': 16})
@@ -72,7 +72,7 @@ def plot_performance_2d(
     # ax[2].set_xlabel('Coeff. of det. R$^2$ (K)')
 
     ax[0].set_ylabel('Height (km)')
-    if ret_type == 'tpb':
+    if 'tpb' in files[0]:
         ax[0].set_ylim(0, 3)
     else:
         ax[0].set_ylim(0, 10)

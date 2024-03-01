@@ -20,7 +20,6 @@ params:
     freq: [51.26, 52.28, 53.86, 54.94, 56.66, 57.30, 58.00]
 
     angle: [90]
-        
-    surf_mode: 'no_surface'
+
         
             

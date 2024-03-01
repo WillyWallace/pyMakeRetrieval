@@ -34,7 +34,8 @@ class RetArray:
         if isinstance(self.variable, np.ndarray):
             return self.variable
         if isinstance(
-                self.variable, (int, float, np.float32, np.int8, np.float64, np.int32, np.uint16)):
+                self.variable, (int, float, np.float32, np.int8,
+                                np.float64, np.int32, np.uint16, np.int16)):
             return np.array(self.variable)
         raise ValueError(f"Incorrect input array: {self.variable}")
 
@@ -111,7 +112,7 @@ def save_ret(ret: Ret, output_file: str, att: dict, data_type: str) -> None:
             "n_freq_ret": len(ret.data["freq"][:]),
             "n_prr_err": len(ret.data["freq"][:].T)+1,
             "n_prr_errs": 3,
-            "n_coeff": 2 * len(ret.data["freq"][:]),
+            "n_coeff": len(ret.data["coefficient_mvr"][:]),
         }
 
     else:

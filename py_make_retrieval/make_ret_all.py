@@ -37,10 +37,11 @@ def main(args):
     for file in rt_file_list:
         rt_files.append(xr.open_dataset(file))
 
-    rt_data = xr.concat(rt_files, dim='n_date')
-
+    rt_data = xr.concat(rt_files, dim='n_date', data_vars='different')
+    rt_data = rt_data.dropna(dim='n_date')
     # set frequency and date as coordinates
-    rt_data = rt_data.set_coords(['frequency', 'date'])
+    rt_data = rt_data.set_coords(['frequency', 'date', 'elevation_angle'])
+    rt_data = rt_data.swap_dims({'n_angle': 'elevation_angle'})
 
     for ret_type in ret_types:
         print('making ' + ret_type + ' retrievals')
@@ -57,13 +58,33 @@ def main(args):
 
             results = []
             for ret_spec in ret_specs:
+                rt_data = rt_data.interp(
+                    elevation_angle=np.sort(
+                        np.append(
+                            rt_data.elevation_angle.values,
+                            ret_specs[ret_spec]['multi_angles']
+                        )
+                    ), method='cubic'
+                )
+
                 ret_specs[ret_spec].update(config)
+
                 results.append(MakeRetrieval(ret_specs[ret_spec],
                                              rt_data,
                                              ret_type,
                                              )
                                )
         else:
+            if config['angle'] not in rt_data.elevation_angle.values:
+                rt_data = rt_data.interp(
+                    elevation_angle=np.sort(
+                        np.append(
+                            rt_data.elevation_angle.values,
+                            config['angle']
+                        )
+                    ), method='cubic'
+                )
+
             MakeRetrieval(config,
                           rt_data,
                           ret_type,
