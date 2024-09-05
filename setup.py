@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pyMakeRetrieval',
-    version='',
+    version='1.2.0',
     packages=['py_make_retrieval'],
     url='',
     license='',
