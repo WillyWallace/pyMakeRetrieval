@@ -2,22 +2,14 @@
 
 params:
     # input files from radiative transfer (rt)
-    # rt_paths: ['example_data/']
-#    rt_paths: ['/Users/andreas/work/Data/rad_transfer/lindenberg/']
-    rt_paths: ['/Users/andreas/work/Data/rad_transfer/neumayer3/']
-
-#    rt_patterns: ['rt_*_vers03-era5-clwc_*.nc', 'rt_10393_vers01_*.nc']
-#    rt_patterns: ['rt_*_vers04-era5-clwc_*.nc', 'rt_*_vers04-RS-mod_ad_*.nc']
-#    rt_patterns: ['rt_crested_butte_vers02-RS_guc-mod_ad_*.nc']
-    rt_patterns: ['rt_Neumayer3_vers00-RS_Neumayer-mod_ad_*.nc']
+    rt_paths: ['example_data/']
+    rt_patterns: ['rt_*_vers03-era5-clwc_*.nc', 'rt_10393_vers01_*.nc']
 
     # 3 letter site description
-#    site: 'RAO'
-    site: 'NMY'
+    site: 'RAO'
 
     # site long name
-#    site_location: 'Lindenberg, Germany'
-    site_location: 'Neumayer 3, Antarctica'
+    site_location: 'Lindenberg, Germany'
 
     # version
     retrieval_version: 'no_surf'
