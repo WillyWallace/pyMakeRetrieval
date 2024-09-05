@@ -17,7 +17,6 @@ from py_make_retrieval import ret
 from py_make_retrieval.plotting import plot_performance_2d
 
 
-
 class MakeRetrieval:
     r"""The core of making the retrieval from radiative transfer data', which
     contains all required parameters.
