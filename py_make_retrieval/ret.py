@@ -106,7 +106,7 @@ def save_ret(ret: Ret, output_file: str, att: dict, data_type: str) -> None:
             "n_prrs_err": 3,
             "n_coeff": len(ret.data["coefficient_mvr"][:, 0]),
         }
-    elif data_type in ("tbx", "iwv", "lwp"):
+    elif data_type in ("tbx", "iwv", "lwp", "lwp_sc"):
         dims = {
             "n_freq_ret": len(ret.data["freq"][:]),
             "n_prr_err": len(ret.data["freq"][:].T)+1,

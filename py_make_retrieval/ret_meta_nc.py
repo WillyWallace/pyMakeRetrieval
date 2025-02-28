@@ -21,7 +21,7 @@ def get_data_attributes(rpg_variables: dict, data_type: str) -> dict:
         att = get_data_attributes('data','data_type')
     """
 
-    if data_type in ("tbx", "iwv", "lwp", "tpb", "tpt", "hpt"):
+    if data_type in ("tbx", "iwv", "lwp", "tpb", "tpt", "hpt", "lwp_sc"):
         read_att = att_reader[data_type]
         attributes = dict(ATTRIBUTES_COM, **read_att)
 
@@ -288,4 +288,5 @@ att_reader: dict[str, dict] = {
     "lwp": ATTRIBUTES_iwv_lwp,
     "tpt": ATTRIBUTES_tpt,
     "hpt": ATTRIBUTES_hpt,
+    "lwp_sc": ATTRIBUTES_iwv_lwp,
 }

@@ -103,7 +103,7 @@ class MakeRetrieval:
         if not os.path.exists(f"output/{self.specs['site']}"):
             os.makedirs(f"output/{self.specs['site']}")
 
-        if self.ret_type in ('tbx', 'iwv', 'lwp', 'tpt', 'hpt'):
+        if self.ret_type in ('tbx', 'iwv', 'lwp', 'tpt', 'hpt', 'lwp_sc'):
 
             self.freq_index = self.get_freq_index(self.specs['freq'], self.rt_data)
             self.angle_index = self.get_angle_index()
@@ -214,7 +214,7 @@ class MakeRetrieval:
 
                     jj = jj + 1
 
-            elif self.ret_type in ('iwv', 'lwp'):
+            elif self.ret_type in ('iwv', 'lwp', 'lwp_sc'):
                 for i_ang in self.specs['angle']:
                     ii = 0
                     xx = np.argwhere(self.rt_data.isel(n_date=0
@@ -239,7 +239,7 @@ class MakeRetrieval:
                     self.specs['predictand_max'] = self.specs['predictand_max'] * airmf
 
                     yyy = []
-                    for kk in range(self.rt_dat.dims['n_date']):
+                    for kk in range(self.rt_dat.sizes['n_date']):
 
                         mu, _ = mu_calc(
                             self.height_grid.values,
@@ -267,7 +267,7 @@ class MakeRetrieval:
                             yyy.append(self.rt_dat.isel(
                                 n_date=kk
                             ).integrated_water_vapor.squeeze().values*airmf)
-                        elif self.ret_type == 'lwp':
+                        elif self.ret_type in  ('lwp', 'lwp_sc'):
                             yyy.append(self.rt_dat.isel(
                                 n_date=kk
                             ).liquid_water_path.squeeze().values*airmf)
@@ -275,12 +275,21 @@ class MakeRetrieval:
                             raise ValueError("no valid ret_type")
 
                     # define input and output
-                    x = self.rt_dat.brightness_temperatures.squeeze(dim='elevation_angle').values
+                    if self.ret_type in ('iwv', 'lwp'):
+                        x = self.rt_dat.brightness_temperatures.squeeze(dim='elevation_angle').values
+                        # add measurement noise to the brightness temperatures
+                        x_noise = self.add_noise(x)
+
+                    elif self.ret_type in ('lwp_sc'):
+                        x_cloudy = self.rt_dat.brightness_temperatures.squeeze(dim='elevation_angle').values
+                        x_clear_sky = self.rt_dat.brightness_temperatures_for_clear_sky.squeeze(dim='elevation_angle').values
+                        # add measurement noise to the brightness temperatures
+                        x_cloudy_noise = self.add_noise(x_cloudy)
+                        x_clear_sky_noise = self.add_noise(x_clear_sky)
+
+                        x_noise = (x_cloudy_noise - x_clear_sky_noise)
+
                     y = np.array(yyy)
-                    # print(x.shape)
-                    # print(y.shape)
-                    # add measurement noise to the brightness temperatures
-                    x_noise = self.add_noise(x)
 
                     if self.specs['surf_mode'] == 'surface':
                         t_gr_noise = np.random.normal(0, 1., y.shape[0]
@@ -305,8 +314,15 @@ class MakeRetrieval:
                     else:
                         x_new = x_noise
 
-                    # make quadratic
-                    x_new = np.concatenate([x_new, x_new ** 2], axis=1)
+                    # make quadratic or cubic if specified
+                    if self.specs['regression_type'] == 'linear':
+                        x_new = x_new
+                    elif self.specs['regression_type'] == 'quadratic':
+                        x_new = np.concatenate([x_new, x_new ** 2], axis=1)
+                    elif self.specs['regression_type'] == 'cubic':
+                        x_new = np.concatenate([x_new, x_new ** 2, x_new ** 3], axis=1)
+                    else:
+                        raise ValueError("no valid regression type, choose one from linear, quadratic or cubic")
 
                     # split data into traing and test data
                     self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(

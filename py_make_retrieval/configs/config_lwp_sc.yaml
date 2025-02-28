@@ -1,0 +1,26 @@
+# config file
+
+params:
+    # general specifications
+    predictand_min: 0.
+    predictand_max: 1.
+
+    # predictor
+    predictor: 'tb'
+    predictor_min: 2.73
+    predictor_max: 330.
+    tb_noise: 0.5
+
+    # regression type (linear or quadratic)
+    regression_type: 'cubic'
+
+    predictor_error: [0.5]
+
+    # surface layer measurement uncertainties, T, p, q
+    surface_error: [0.2, 100., .5e-3]
+
+    # retrieval specifications
+    freq: [89]
+
+#    angle: [48]
+    angle: [90]

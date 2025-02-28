@@ -16,7 +16,7 @@
 <!-- [![Twitter](https://img.shields.io/twitter/follow/RSAtmos_LIM?style=for-the-badge)](https://twitter.com/RSAtmos_LIM) -->
 
 # pyMakeRetrieval
-Generates microwave radiometer retrievals for LWP, IWV, TPT, HPT, TPB, TBX based on radiative transfer calculation data  
+Generates microwave radiometer retrievals for LWP, IWV, TPT, HPT, TPB, TBX, but also single channel retrievals for LWP (LWP_sc) from cloud radars based on radiative transfer calculation data
 
 
 <!-- TABLE OF CONTENTS -->
@@ -37,7 +37,7 @@ Generates microwave radiometer retrievals for LWP, IWV, TPT, HPT, TPB, TBX based
 <!-- Introduction -->
 ## Introduction
 
-This repository was created for generating microwave radiometer retrievals for LWP, IWV, TPT, HPT, TPB, TBX based on radiative transfer calculation data. The default settings in the config files are set for the microwave radiometer HATPRO from the german manufacturer Radiometer Physics GmbH. 
+This repository was created for generating microwave radiometer retrievals for LWP, IWV, TPT, HPT, TPB, TBX, but also single channel retrievals for LWP (LWP_sc) from cloud radars based on radiative transfer calculation data. The default settings in the config files are set for the microwave radiometer HATPRO from the german manufacturer Radiometer Physics GmbH.
 
 <!-- Installation -->
 ## Installation
@@ -67,6 +67,7 @@ Below is an example of how run the script, which reads in the radiative transfer
 `RETRIEVAL`
 - `iwv`: integrated water vapour
 - `lwp`: liquid water path
+- `lwp`: liquid water path from single channel based on brightness temperature difference between cloudy and clear sky
 - `tbx`: spectrum retrievals for spectral consistency checks
 - `hpt`: absolute humidity profiles from single angle observations
 - `tpt`: temperature profiles from single angle observations

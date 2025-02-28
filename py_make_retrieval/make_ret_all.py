@@ -10,12 +10,12 @@ from py_make_retrieval.make_ret_core import MakeRetrieval
 def main(args):
 
     if args.ret == 'all':
-        ret_types = ['lwp', 'iwv', 'tpt', 'hpt', 'tpb', 'tbx']
-    elif args.ret in ['lwp', 'iwv', 'tpt', 'hpt', 'tpb', 'tbx']:
+        ret_types = ['lwp', 'iwv', 'tpt', 'hpt', 'tpb', 'tbx', 'lwp_sc']
+    elif args.ret in ['lwp', 'iwv', 'tpt', 'hpt', 'tpb', 'tbx', 'lwp_sc']:
         ret_types = [args.ret]
     else:
         raise ValueError("no valid retrieval type. Please choose lwp, "
-                         "iwv, tpt, hpt, tpb, tbx or all")
+                         "iwv, tpt, hpt, tpb, tbx, 'lwp_sc'  or all")
 
     # read general config (paths,...)
     general_config = read_yaml_config("py_make_retrieval/configs/general_config.yaml")['params']
