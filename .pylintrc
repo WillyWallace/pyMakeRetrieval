@@ -16,6 +16,7 @@ disable =
   duplicate-code,
   import-error,
   too-many-branches
+  too-many-positional-arguments
 
 [MASTER]
 max-branches=23
