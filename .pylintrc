@@ -15,7 +15,7 @@ disable =
   too-many-instance-attributes,
   duplicate-code,
   import-error,
-  too-many-branches
+  too-many-branches,
   too-many-positional-arguments
 
 [MASTER]
