@@ -282,12 +282,14 @@ class MakeRetrieval:
 
                     elif self.ret_type in ('lwp_sc'):
                         x_cloudy = self.rt_dat.brightness_temperatures.squeeze(dim='elevation_angle').values
-                        x_clear_sky = self.rt_dat.brightness_temperatures_for_clear_sky.squeeze(dim='elevation_angle').values
+                        x_clear_sky = self.rt_dat.brightness_temperatures_for_clear_sky.squeeze(
+                            dim='elevation_angle'
+                            ).values
                         # add measurement noise to the brightness temperatures
                         x_cloudy_noise = self.add_noise(x_cloudy)
                         x_clear_sky_noise = self.add_noise(x_clear_sky)
 
-                        x_noise = (x_cloudy_noise - x_clear_sky_noise)
+                        x_noise = x_cloudy_noise - x_clear_sky_noise
 
                     y = np.array(yyy)
 
@@ -316,13 +318,15 @@ class MakeRetrieval:
 
                     # make quadratic or cubic if specified
                     if self.specs['regression_type'] == 'linear':
-                        x_new = x_new
+                        pass
                     elif self.specs['regression_type'] == 'quadratic':
                         x_new = np.concatenate([x_new, x_new ** 2], axis=1)
                     elif self.specs['regression_type'] == 'cubic':
                         x_new = np.concatenate([x_new, x_new ** 2, x_new ** 3], axis=1)
                     else:
-                        raise ValueError("no valid regression type, choose one from linear, quadratic or cubic")
+                        raise ValueError(
+                            "no valid regression type, choose one from linear, quadratic or cubic"
+                            )
 
                     # split data into traing and test data
                     self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(
