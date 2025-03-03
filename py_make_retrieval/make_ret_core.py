@@ -862,15 +862,15 @@ class MakeRetrieval:
             bins = [np.arange(x_min, x_max, .5), np.arange(y_min, y_max, .5)]
         elif self.ret_type == 'iwv':
             x_min = 0
-            x_max = 60
+            x_max = self.specs['predictand_min']
             y_min = 0
-            y_max = 60
+            y_max = self.specs['predictand_min']
             bins = [np.arange(x_min, x_max, .5), np.arange(y_min, y_max, .5)]
         else:
             x_min = 0
-            x_max = 1.2
+            x_max = self.specs['predictand_min']
             y_min = 0
-            y_max = 1.2
+            y_max = self.specs['predictand_min']
             bins = [np.arange(x_min, x_max, .01), np.arange(y_min, y_max, .01)]
 
         fig, ax = plt.subplots(figsize=(6, 4), facecolor='white')

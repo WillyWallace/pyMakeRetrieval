@@ -3,7 +3,7 @@
 params:
     # general specifications
     predictand_min: 0.
-    predictand_max: 60.
+    predictand_max: 100.
 
     # predictor
     predictor: 'tb'

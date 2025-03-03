@@ -67,7 +67,7 @@ Below is an example of how run the script, which reads in the radiative transfer
 `RETRIEVAL`
 - `iwv`: integrated water vapour
 - `lwp`: liquid water path
-- `lwp`: liquid water path from single channel based on brightness temperature difference between cloudy and clear sky
+- `lwp_sc`: liquid water path from single channel based on brightness temperature difference between cloudy and clear sky
 - `tbx`: spectrum retrievals for spectral consistency checks
 - `hpt`: absolute humidity profiles from single angle observations
 - `tpt`: temperature profiles from single angle observations

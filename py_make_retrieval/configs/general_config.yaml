@@ -2,19 +2,22 @@
 
 params:
     # input files from radiative transfer (rt)
-    rt_paths: ['/projekt2/remsens/data_new/radiative_transfer_data/RT_data/lindenberg/']
-    rt_patterns: ['rt_lindenberg_vers04-era5-clwc_*.nc']
+    rt_paths: ['/projekt2/remsens/data_new/radiative_transfer_data/RT_data/*N_*W/']
+    rt_patterns: ['rt_*N_*W_vers00-era5-clwc_*.nc']
 
     # 3 letter site description
     #site: 'TWK'
-    site: 'RAO'
+    #site: 'RAO'
+    site: 'BOW'
 
     # site long name
     #site_location: 'Tawhaki, New Zealand'
-    site_location: 'Lindeberg, Germany'
+    #site_location: 'Lindeberg, Germany'
+    site_location: 'RV Meteor, Tropical Atlantic'
 
     # version
     retrieval_version: 'no_surf'
 
     # surface mode (surface or no_surface)
     surf_mode: 'no_surface'
+
